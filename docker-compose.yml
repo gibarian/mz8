@@ -1,0 +1,141 @@
+version: '2'
+
+
+##################
+#### SERVICES ####
+##################
+
+services:
+
+
+  ######################
+  #### APPLICATIONS ####
+  ######################
+  
+  jira:
+    image: cptactionhank/atlassian-jira:7.2.4
+    container_name: jira-7.2.4
+    networks:
+      - mz8-network-1
+    volumes:
+      - jiradata:/var/atlassian/jira
+    links:
+      - 'mysql-jira:mysql-jira'
+
+  confluence:
+    image: blacklabelops/confluence:6.1.2
+    hostname: confluence
+    container_name: confluence
+    networks:
+      - mz8-network-1
+    volumes:
+      - confluencedata:/var/atlassian/confluence
+    links:
+      - 'mysql-confluence:mysql-confluence'
+
+  owncloud:
+    image: owncloud
+    container_name: owncloud
+    networks:
+      - mz8-network-1
+    volumes:
+      - owncloud:/var/www/html
+    links:
+      - 'mysql-oc:mysql-oc'
+
+
+  ###################  
+  #### DATABASES ####
+  ###################
+
+  mysql-jira:
+    image: mysql:5.6
+    hostname: mysql-jira
+    container_name: mysql-jira
+    networks:
+      - mz8-network-1
+    volumes:
+      - mysqldata-jira:/var/lib/mysql
+    environment:
+      - 'MYSQL_ROOT_PASSWORD=root'
+      - 'MYSQL_DATABASE=jira_db1'
+      - 'MYSQL_USER=jira'
+      - 'MYSQL_PASSWORD=jira'
+  
+  mysql-confluence:
+    image: mysql:5.6
+    hostname: mysql-confluence
+    container_name: mysql-confluence
+    networks:
+      - mz8-network-1
+    volumes:
+      - mysql-confluence:/var/lib/mysql
+    environment:
+      - 'MYSQL_ROOT_PASSWORD=root'
+      - 'MYSQL_DATABASE=confluence_db1'
+      - 'MYSQL_USER=confluence'
+      - 'MYSQL_PASSWORD=confluence'
+  
+  mysql-oc:
+    image: mysql:5.6
+    hostname: mysql-oc
+    container_name: mysql-oc
+    networks:
+      - mz8-network-1
+    volumes:
+      - mysqldata-oc:/var/lib/mysql
+    environment:
+      - 'MYSQL_ROOT_PASSWORD=root'
+      - 'MYSQL_DATABASE=oc_db1'
+      - 'MYSQL_USER=oc'
+      - 'MYSQL_PASSWORD=oc'
+
+
+  #######################
+  #### REVERSE PROXY ####
+  #######################
+
+  httpd:
+    image: httpd
+    hostname: httpd
+    container_name: httpd
+    networks:
+      - mz8-network-1
+    volumes:
+      - apache2:/usr/local/apache2
+    ports:
+      - '8080:8080'
+      - '8081:8081'
+      - '8082:8082'
+
+
+#################
+#### VOLUMES ####
+#################
+
+volumes:
+  jiradata:
+    external: false
+  confluencedata:
+    external: false
+  owncloud:
+    external: false
+
+  mysqldata-jira:
+    external: false
+  mysql-confluence:
+    external: false
+  mysqldata-oc:
+    external: false
+
+  apache2:
+    external: false
+
+
+##################
+#### NETWORKS ####
+##################
+
+networks:
+  mz8-network-1:
+    driver: bridge
