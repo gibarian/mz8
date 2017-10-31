@@ -27,6 +27,8 @@ services:
     container_name: confluence
     networks:
       - mz8-network-1
+    ports:
+      - '8085:8090'
     volumes:
       - confluencedata:/var/atlassian/confluence
     links:
@@ -103,9 +105,9 @@ services:
     volumes:
       - apache2:/usr/local/apache2
     ports:
-      - '8080:8080'
-      - '8081:8081'
       - '8082:8082'
+      - '8083:8083'
+      - '8084:8084'
 
 
 #################
