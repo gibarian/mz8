@@ -13,7 +13,8 @@ services:
   
   jira:
     image: cptactionhank/atlassian-jira:7.2.4
-    container_name: jira-7.2.4
+    container_name: jira
+    hostname: jira
     networks:
       - mz8-network-1
     volumes:
@@ -23,8 +24,8 @@ services:
 
   confluence:
     image: blacklabelops/confluence:6.1.2
-    hostname: confluence
     container_name: confluence
+    hostname: confluence
     networks:
       - mz8-network-1
     ports:
@@ -37,6 +38,7 @@ services:
   owncloud:
     image: owncloud
     container_name: owncloud
+    hostname: owncloud
     networks:
       - mz8-network-1
     volumes:
@@ -51,8 +53,8 @@ services:
 
   mysql-jira:
     image: mysql:5.6
-    hostname: mysql-jira
     container_name: mysql-jira
+    hostname: mysql-jira
     networks:
       - mz8-network-1
     volumes:
@@ -65,8 +67,8 @@ services:
   
   mysql-confluence:
     image: mysql:5.6
-    hostname: mysql-confluence
     container_name: mysql-confluence
+    hostname: mysql-confluence
     networks:
       - mz8-network-1
     volumes:
@@ -79,8 +81,8 @@ services:
   
   mysql-oc:
     image: mysql:5.6
-    hostname: mysql-oc
     container_name: mysql-oc
+    hostname: mysql-oc
     networks:
       - mz8-network-1
     volumes:
@@ -98,8 +100,8 @@ services:
 
   httpd:
     image: httpd
-    hostname: httpd
     container_name: httpd
+    hostname: httpd
     networks:
       - mz8-network-1
     volumes:
