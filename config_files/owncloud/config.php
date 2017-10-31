@@ -7,7 +7,7 @@ $CONFIG = array (
   array (
     0 => '172.18.0.5',
     1 => '127.0.0.1',
-    1 => '127.0.0.1:8081',
+    1 => '127.0.0.1:8084',
   ),
   'datadirectory' => '/var/www/html/data',
   'overwrite.cli.url' => 'https://172.18.0.5',
