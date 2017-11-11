@@ -1,3 +1,6 @@
+# set tabstop=2 shiftwidth=2 expandtab
+# jdbc:postgresql://postgresql-confluence:5432/confluence_db1
+
 version: '2'
 
 ##################
@@ -29,6 +32,12 @@ services:
       - mz8-network-1
     ports:
       - '8085:8090'
+    environment:
+      - 'CATALINA_OPTS= -Xms256m -Xmx1g'
+      - 'CONFLUENCE_PROXY_NAME='
+      - 'CONFLUENCE_PROXY_PORT='
+      - 'CONFLUENCE_PROXY_SCHEME='
+      - 'CONFLUENCE_DELAYED_START='
     volumes:
       - confluencedata:/var/atlassian/confluence
     links:
@@ -49,6 +58,36 @@ services:
   ###################  
   #### DATABASES ####
   ###################
+
+  postgresql-jira:
+    image: blacklabelops/postgres
+    hostname: postgresql-jira
+    networks:
+      - mz8-network-1
+    volumes:
+      - postgresql-jira:/var/lib/postgresql/data
+    environment:
+      - 'POSTGRES_USER=jira'
+      - 'POSTGRES_PASSWORD=jira'
+      - 'POSTGRES_DB=jira_db1'
+      - 'POSTGRES_ENCODING=UTF8'
+      - 'POSTGRES_COLLATE=C'
+      - 'POSTGRES_COLLATE_TYPE=C'
+  
+  postgresql-confluence:
+    image: blacklabelops/postgres
+    hostname: postgresql-confluence
+    networks:
+      - mz8-network-1
+    volumes:
+      - postgresql-confluence:/var/lib/postgresql/data
+    environment:
+      - 'POSTGRES_USER=confluence'
+      - 'POSTGRES_PASSWORD=confluence'
+      - 'POSTGRES_DB=confluence_db1'
+      - 'POSTGRES_ENCODING=UTF8'
+      - 'POSTGRES_COLLATE=C'
+      - 'POSTGRES_COLLATE_TYPE=C'
 
   mysql-jira:
     image: mysql:5.6
@@ -77,7 +116,7 @@ services:
       - 'MYSQL_DATABASE=confluence_db1'
       - 'MYSQL_USER=confluence'
       - 'MYSQL_PASSWORD=confluence'
-  
+ 
   mysql-oc:
     image: mysql:5.6
     container_name: mysql-oc
@@ -121,6 +160,11 @@ volumes:
   confluencedata:
     external: false
   owncloud:
+    external: false
+
+  postgresql-jira:
+    external: false
+  postgresql-confluence:
     external: false
 
   mysqldata-jira:
