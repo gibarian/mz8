@@ -13,21 +13,22 @@ services:
   #### APPLICATIONS ####
   ######################
   
-  jira:
+  jiramz8:
     image: cptactionhank/atlassian-jira:7.2.4
-    container_name: jira
-    hostname: jira
+    container_name: jiramz8
+    hostname: jiramz8
     networks:
       - mz8-network-1
     volumes:
       - jiradata:/var/atlassian/jira
     links:
-      - 'mysql-jira:mysql-jira'
+      #- 'mysql-jira:mysql-jira'
+      - 'postgresql-jira:postgresql-jira'
 
-  confluence:
+  confluencemz8:
     image: blacklabelops/confluence:6.1.2
-    container_name: confluence
-    hostname: confluence
+    container_name: confluencemz8
+    hostname: confluencemz8
     networks:
       - mz8-network-1
     ports:
@@ -39,9 +40,11 @@ services:
       - 'CONFLUENCE_PROXY_SCHEME='
       - 'CONFLUENCE_DELAYED_START='
     volumes:
-      - confluencedata:/var/atlassian/confluence
+      - confluencedatavar:/var/atlassian/confluence
+      - confluencedataopt:/opt/atlassian/confluence
     links:
-      - 'mysql-confluence:mysql-confluence'
+      #- 'mysql-confluence:mysql-confluence'
+      - 'postgresql-confluence:postgresql-confluence'
 
   owncloud:
     image: owncloud
@@ -61,6 +64,7 @@ services:
 
   postgresql-jira:
     image: blacklabelops/postgres
+    container_name: postgresql-jira
     hostname: postgresql-jira
     networks:
       - mz8-network-1
@@ -76,6 +80,7 @@ services:
   
   postgresql-confluence:
     image: blacklabelops/postgres
+    container_name: postgresql-confluence
     hostname: postgresql-confluence
     networks:
       - mz8-network-1
@@ -89,33 +94,33 @@ services:
       - 'POSTGRES_COLLATE=C'
       - 'POSTGRES_COLLATE_TYPE=C'
 
-  mysql-jira:
-    image: mysql:5.6
-    container_name: mysql-jira
-    hostname: mysql-jira
-    networks:
-      - mz8-network-1
-    volumes:
-      - mysqldata-jira:/var/lib/mysql
-    environment:
-      - 'MYSQL_ROOT_PASSWORD=root'
-      - 'MYSQL_DATABASE=jira_db1'
-      - 'MYSQL_USER=jira'
-      - 'MYSQL_PASSWORD=jira'
-  
-  mysql-confluence:
-    image: mysql:5.6
-    container_name: mysql-confluence
-    hostname: mysql-confluence
-    networks:
-      - mz8-network-1
-    volumes:
-      - mysql-confluence:/var/lib/mysql
-    environment:
-      - 'MYSQL_ROOT_PASSWORD=root'
-      - 'MYSQL_DATABASE=confluence_db1'
-      - 'MYSQL_USER=confluence'
-      - 'MYSQL_PASSWORD=confluence'
+#  mysql-jira:
+#    image: mysql:5.6
+#    container_name: mysql-jira
+#    hostname: mysql-jira
+#    networks:
+#      - mz8-network-1
+#    volumes:
+#      - mysqldata-jira:/var/lib/mysql
+#    environment:
+#      - 'MYSQL_ROOT_PASSWORD=root'
+#      - 'MYSQL_DATABASE=jira_db1'
+#      - 'MYSQL_USER=jira'
+#      - 'MYSQL_PASSWORD=jira'
+#  
+#  mysql-confluence:
+#    image: mysql:5.6
+#    container_name: mysql-confluence
+#    hostname: mysql-confluence
+#    networks:
+#      - mz8-network-1
+#    volumes:
+#      - mysql-confluence:/var/lib/mysql
+#    environment:
+#      - 'MYSQL_ROOT_PASSWORD=root'
+#      - 'MYSQL_DATABASE=confluence_db1'
+#      - 'MYSQL_USER=confluence'
+#      - 'MYSQL_PASSWORD=confluence'
  
   mysql-oc:
     image: mysql:5.6
@@ -157,7 +162,9 @@ services:
 volumes:
   jiradata:
     external: false
-  confluencedata:
+  confluencedatavar:
+    external: false
+  confluencedataopt:
     external: false
   owncloud:
     external: false
@@ -167,10 +174,10 @@ volumes:
   postgresql-confluence:
     external: false
 
-  mysqldata-jira:
-    external: false
-  mysql-confluence:
-    external: false
+#  mysqldata-jira:
+#    external: false
+#  mysql-confluence:
+#    external: false
   mysqldata-oc:
     external: false
 
