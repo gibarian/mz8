@@ -1,5 +1,13 @@
 # set tabstop=2 shiftwidth=2 expandtab
+#
 # jdbc:postgresql://postgresql-confluence:5432/confluence_db1
+#   psql --host=[IP] --user=confluence --dbname=confluence_db
+#   pg_dump --dbname=confluence_db1 --host=[IP] --username=confluence -W > dump.sql
+#   \list \l 
+#   \connect confluence_db1 
+#   \dt 
+#   \d users
+
 
 version: '2'
 
