@@ -1,0 +1,13 @@
+[Unit]
+Description=iperf3 Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/sbin/docker-bring-up 436858358ba7
+Restart=on-abort
+
+
+[Install]
+WantedBy=multi-user.target

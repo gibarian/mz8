@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ -z $1 ];then
+	cont_to_up=""
+else
+	cont_to_up=$@
+fi
+
+cont_all=`/usr/bin/docker ps -q -a |xargs`
+cont_up=`/usr/bin/docker ps -q |xargs`
+
+for cont in $cont_to_up; do
+
+	check=0
+
+	for i in $cont_up; do
+		
+		if [ "$cont" = "$i" ];then
+			check=1
+		fi
+	done
+
+	if [ "$check" != "1" ];then
+		/usr/bin/docker start $cont
+	fi
+done
