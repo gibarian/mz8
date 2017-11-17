@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=root
-ExecStart=/usr/local/sbin/docker-bring-up 436858358ba7
+ExecStart=/usr/local/sbin/docker-bring-up
 Restart=on-abort
 
 
