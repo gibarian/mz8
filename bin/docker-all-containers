@@ -1,0 +1,41 @@
+#!/bin/bash
+
+function cstart {
+	
+	for i in `/usr/bin/docker ps -q -a |xargs`; do c=0
+		for j in `/usr/bin/docker ps -q |xargs`; do
+			if [ "$i" = "$j" ]; then
+				c=1
+			fi
+		done
+		if [ "$c" != 1 ]; then
+			/usr/bin/docker start $i
+		fi	
+	done
+}
+
+function cstop {
+	
+	for i in `/usr/bin/docker ps -q -a |xargs`; do c=0
+		for j in `/usr/bin/docker ps -q |xargs`; do
+			if [ "$i" = "$j" ]; then
+				c=1
+			fi
+		done
+		if [ "$c" = 1 ]; then
+			/usr/bin/docker stop $i
+		fi	
+	done
+
+}
+
+if [ "$1" = "start" ];then
+	cstart
+elif [ "$1" = "stop" ];then
+	cstop
+elif [ "$1" = "restart" ];then
+	cstop
+	cstart
+else
+	exit 1
+fi
