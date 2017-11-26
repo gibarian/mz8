@@ -1,13 +1,12 @@
 [Unit]
-Description=iperf3 Service
-After=network.target
+Description=Docker MZ8 Service
+Requires=docker.service
+After=docker.service
 
 [Service]
 Type=simple
-User=root
-ExecStart=docker-all-containers start
+ExecStart=/usr/local/sbin/docker-all-containers start
 Restart=on-abort
-
 
 [Install]
 WantedBy=multi-user.target
